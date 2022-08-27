@@ -1,0 +1,6 @@
+[run]
+source = anime_tourney
+omit = 
+    tests/*
+    autoapp.py
+
