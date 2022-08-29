@@ -5,7 +5,7 @@ import sys
 
 from flask import Flask, render_template
 
-from anime_tourney import commands, public, user
+from anime_tourney import commands, public, user, tournament
 from anime_tourney.extensions import (
     bcrypt,
     cache,
@@ -51,6 +51,7 @@ def register_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
+    app.register_blueprint(tournament.views.blueprint)
     return None
 
 

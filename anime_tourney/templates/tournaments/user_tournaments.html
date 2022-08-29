@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container">
+        <h1>Completed or Open Tournaments</h1>
+        <ul>
+            {% for tourney in tournaments %}
+                <li><a href="{{ url_for('tournament.current_match', tid=tourney.id) }}">
+                    {{ tourney.tournament.name }}
+                </a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

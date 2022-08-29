@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container">
+        {% if round.size == 2 %}
+            <h1>Final Round</h1>
+        {% else %}
+            <h1>Round of {{ round.size }}</h1>
+            <h2>Match {{ complete_matches }} of {{ round.size // 2 }}</h2>
+        {% endif %}
+        <div class="row">
+            <div class="col-lg-4" style="position: absolute; left: 3%; width: 45%;">
+                <h3>{{ match.first_contestant.name }}</h3>
+                <iframe id="leftPlayer" style="width: 100%; height: 60vh;"
+                        src="https://www.youtube.com/embed/{{ match.first_contestant.video_id }}?playlist={{ match.first_contestant.video_id }}&loop=1">
+
+                </iframe>
+                <a class="btn btn-outline-secondary"
+                   href="{{ url_for('tournament.pick_victor', match_id=match.id, victor_id=match.first_contestant_id) }}">
+                    Choose
+                </a>
+            </div>
+            <div class="col-lg-4" style="position: absolute; left: 52%; width: 45%;">
+                <h3>{{ match.second_contestant.name }}</h3>
+                <iframe id="leftPlayer" style="width: 100%; height: 60vh;"
+                        src="https://www.youtube.com/embed/{{ match.second_contestant.video_id }}?playlist={{ match.second_contestant.video_id }}&loop=1">
+                </iframe>
+                <a class="btn btn-outline-secondary"
+                   href="{{ url_for('tournament.pick_victor', match_id=match.id, victor_id=match.second_contestant_id) }}">
+                    Choose
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

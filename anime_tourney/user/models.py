@@ -3,6 +3,7 @@
 import datetime as dt
 
 from flask_login import UserMixin
+from sqlalchemy import func
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from anime_tourney.database import Column, PkModel, db, reference_col, relationship
@@ -61,3 +62,7 @@ class User(UserMixin, PkModel):
     def __repr__(self):
         """Represent instance as a unique string."""
         return f"<User({self.username!r})>"
+
+
+db.Index('ix_users_username', func.lower(User.username), unique=True)
+db.Index('ix_users_email', func.lower(User.email), unique=True)
