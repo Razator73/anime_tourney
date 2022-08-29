@@ -62,6 +62,7 @@ def register_errorhandlers(app):
         """Render error template."""
         # If a HTTPException, pull the `code` attribute; default to 500
         error_code = getattr(error, "code", 500)
+        # noinspection PyUnresolvedReferences
         return render_template(f"{error_code}.html"), error_code
 
     for errcode in [401, 404, 500]:
@@ -74,6 +75,7 @@ def register_shellcontext(app):
 
     def shell_context():
         """Shell context objects."""
+        # noinspection PyUnresolvedReferences
         return {"db": db, "User": user.models.User}
 
     app.shell_context_processor(shell_context)
