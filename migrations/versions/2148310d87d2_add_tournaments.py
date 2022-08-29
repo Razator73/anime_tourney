@@ -1,8 +1,8 @@
 """Add tournaments
 
-Revision ID: efea8cf45293
+Revision ID: 2148310d87d2
 Revises: 
-Create Date: 2022-08-29 17:18:41.528255
+Create Date: 2022-08-29 17:41:30.595960
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'efea8cf45293'
+revision = '2148310d87d2'
 down_revision = None
 branch_labels = None
 depends_on = None

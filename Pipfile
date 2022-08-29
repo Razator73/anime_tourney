@@ -50,5 +50,7 @@ flake8-docstrings = "==1.6.0"
 flake8-isort = "==4.1.2.post0"
 isort = "==5.10.1"
 pep8-naming = "==0.13.1"
+# I added
 ipython = "*"
 youtube_dl = "*"
+razator-utils = "*"
