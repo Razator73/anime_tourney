@@ -1,5 +1,5 @@
 """Tournament models."""
-from random import randint
+from random import randint, sample
 
 from anime_tourney.database import Column, PkModel, db, reference_col, relationship
 
@@ -45,6 +45,10 @@ class Round(PkModel):
     is_complete = db.Column(db.BOOLEAN, default=False, nullable=False)
     contestants = relationship('Contestant', secondary=round_contestants, lazy='dynamic',
                                backref=db.backref('contestants', lazy='dynamic'))
+
+    def set_contestants(self):
+        contestants = list(Contestant.query.filter_by(tournament_id=self.user_tournament.tournament.id).all())
+        self.contestants = sample(contestants, self.size)
 
     def create_matches(self):
         if self.size > 1:

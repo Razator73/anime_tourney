@@ -4,9 +4,10 @@
         <h1>Start a new tournament</h1>
         <ul>
             {% for tourney in tournaments %}
-                <li><a href="#">{{ tourney.name }}</a></li>
+                <li><a href="{{ url_for('tournament.create', tid=tourney.id) }}">{{ tourney.name }}</a></li>
             {% endfor %}
         </ul>
     </div>
+    {% block modal %}{% endblock %}
 {% endblock %}
 

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, render_template, redirect, url_for, abort
+from flask import Blueprint, render_template, redirect, url_for, abort, current_app
 from flask_login import login_required, current_user
 
 from anime_tourney.extensions import db
+from anime_tourney.templates.tournaments.forms import NewUserTournamentForm
 from anime_tourney.tournament.models import Tournament, UserTournament, Round, Match, Contestant
 
 blueprint = Blueprint("tournament", __name__, url_prefix="/tournaments", static_folder="../static")
@@ -16,11 +17,28 @@ def index():
     return render_template("tournaments/tournaments.html", tournaments=Tournament.query.all())
 
 
-@blueprint.route('/create/<tid>')
+@blueprint.route('/create/<tid>', methods=['GET', 'POST'])
 @login_required
 def create(tid):
-    user_tournament_id = UserTournament.create(user_id=current_user.id, tournament_id=tid)
-    redirect(url_for('tournament.current_match', tid=tid))
+    # redirect(url_for('tournament.current_match', tid=tid))
+    tourney_contestants = Contestant.query.filter_by(tournament_id=tid).all()
+    create_form = NewUserTournamentForm()
+    size = 2
+    starting_sizes = []
+    current_app.logger.info(len(tourney_contestants))
+    while size <= len(tourney_contestants):
+        current_app.logger.info((size, f'Round of {size}'))
+        starting_sizes.append((size, f'Round of {size}'))
+        size *= 2
+    create_form.starting_sizes.choices = starting_sizes
+    if create_form.validate_on_submit():
+        current_app.logger.debug(f'data - {create_form.starting_sizes.data}')
+        user_tournament = UserTournament.create(user_id=current_user.id, tournament_id=tid)
+        first_round = Round.create(user_tournament_id=user_tournament.id, size=create_form.starting_sizes.data)
+        first_round.set_contestants()
+        first_round.create_matches()
+        return redirect(url_for('tournament.current_match', tid=user_tournament.id))
+    return render_template('tournaments/new_tournament.html', tournaments=Tournament.query.all(), form=create_form)
 
 
 @blueprint.route('/user')
