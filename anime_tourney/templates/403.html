@@ -1,0 +1,15 @@
+
+{% extends "layout.html" %}
+
+{% block page_title %}Not owned{% endblock %}
+
+{% block content %}
+  <div class="jumbotron">
+    <div class="text-center">
+      <h1>403</h1>
+      <p>This is a page that belongs to another user.</p>
+      <p>Want to <a href="{{ url_for('public.home') }}">go home</a> instead?</p>
+    </div>
+  </div>
+{% endblock %}
+

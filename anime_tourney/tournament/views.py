@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, redirect, url_for, abort, current_
 from flask_login import login_required, current_user
 
 from anime_tourney.extensions import db
-from anime_tourney.templates.tournaments.forms import NewUserTournamentForm
+from anime_tourney.tournament.forms import NewUserTournamentForm
 from anime_tourney.tournament.models import Tournament, UserTournament, Round, Match, Contestant
 
 blueprint = Blueprint("tournament", __name__, url_prefix="/tournaments", static_folder="../static")
@@ -21,6 +21,7 @@ def index():
 @login_required
 def create(tid):
     # redirect(url_for('tournament.current_match', tid=tid))
+    Tournament.query.filter_by(id=tid).first_or_404()
     tourney_contestants = Contestant.query.filter_by(tournament_id=tid).all()
     create_form = NewUserTournamentForm()
     size = 2
@@ -53,6 +54,8 @@ def user_tournaments():
 @login_required
 def current_match(tid):
     user_tourney = UserTournament.get_by_id(tid)
+    if user_tourney.user_id != current_user.id:
+        abort(403)
     if user_tourney.is_complete:
         return redirect(url_for('tournament.victor_page', tid=tid))
     elif not user_tourney:
@@ -70,6 +73,8 @@ def current_match(tid):
 @login_required
 def pick_victor(match_id, victor_id):
     match = Match.get_by_id(match_id)
+    if match.round.user_tournament.user_id != current_user.id:
+        abort(403)
     match.victor_id = victor_id
     match.next_round.contestants.append(Contestant.get_by_id(victor_id))
     if not [m for m in match.round.matches if not m.victor_id]:
@@ -88,5 +93,7 @@ def pick_victor(match_id, victor_id):
 @login_required
 def victor_page(tid):
     final_round = Round.query.filter_by(user_tournament_id=tid).filter_by(size=1).first()
+    if final_round.user_tournament.user_id != current_user.id:
+        abort(403)
     winner = final_round.contestants[0]
     return render_template('tournaments/victor.html', winner=winner)
