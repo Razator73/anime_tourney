@@ -1,32 +1,32 @@
 {% extends 'tournaments/tournaments.html' %}
 
 {% block modal %}
-    <div class="modal" tabindex="-1" role="dialog" id="tournamentModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form action="" method="post">
-                    {{ form.hidden_tag() }}
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ form.starting_sizes.label }}</h5>
-                    </div>
-                    <div class="modal-body">
-                        {{ form.starting_sizes() }}
-                    </div>
-                    <div class="modal-footer">
-                    {{ form.submit() }}
-                    <a href="{{ url_for('tournament.index') }}" class="btn btn-secondary">Close</a>
-                </div>
-                </form>
-            </div>
-        </div>
+  <div class="modal" tabindex="-1" role="dialog" id="tournamentModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form action="" method="post">
+          {{ form.hidden_tag() }}
+          <div class="modal-header">
+            <h5 class="modal-title">{{ form.starting_sizes.label }}</h5>
+          </div>
+          <div class="modal-body">
+            {{ form.starting_sizes() }}
+          </div>
+          <div class="modal-footer">
+            {{ form.submit() }}
+            <a href="{{ url_for('tournament.index') }}" class="btn btn-secondary">Close</a>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 {% endblock %}
 
 {% block js %}
-    <script>
-        $(document).ready(function(){
-            console.log("window is loaded")
-            $("#tournamentModal").modal("show")
-        })
-    </script>
+  <script>
+      $(document).ready(function(){
+          console.log("window is loaded")
+          $("#tournamentModal").modal("show")
+      })
+  </script>
 {% endblock %}
