@@ -18,6 +18,7 @@ class LoginForm(FlaskForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.user = None
 
+    # noinspection PyMethodOverriding
     def validate(self):
         """Validate the form."""
         initial_validation = super(LoginForm, self).validate()

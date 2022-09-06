@@ -18,6 +18,7 @@ class CRUDMixin(object):
     @classmethod
     def create(cls, **kwargs):
         """Create a new record and save it the database."""
+        # noinspection PyArgumentList
         instance = cls(**kwargs)
         return instance.save()
 

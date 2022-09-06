@@ -76,7 +76,11 @@ def register_shellcontext(app):
     def shell_context():
         """Shell context objects."""
         # noinspection PyUnresolvedReferences
-        return {"db": db, "User": user.models.User}
+        return {
+            "db": db, "User": user.models.User, "Tournament": tournament.models.Tournament,
+            'UserTournament': tournament.models.UserTournament, 'Contestant': tournament.models.Contestant,
+            'Round': tournament.models.Round, 'Match': tournament.models.Match
+        }
 
     app.shell_context_processor(shell_context)
 
