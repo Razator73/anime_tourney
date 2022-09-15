@@ -9,25 +9,33 @@
     {% endif %}
     <div class="row">
       <div class="col-lg-4" style="position: absolute; left: 3%; width: 45%;">
-        <h3>{{ match.first_contestant.name }}</h3>
-        <iframe id="leftPlayer" style="width: 100%; height: 60vh;"
-                src="https://www.youtube.com/embed/{{ match.first_contestant.video_id }}?playlist={{ match.first_contestant.video_id }}&loop=1">
+        {% if match.first_contestant %}
+          <h3>{{ match.first_contestant.name }}</h3>
+          <iframe id="leftPlayer" style="width: 100%; height: 60vh;"
+                  src="https://www.youtube.com/embed/{{ match.first_contestant.video_id }}?playlist={{ match.first_contestant.video_id }}&loop=1">
 
-        </iframe>
-        <a class="btn btn-outline-secondary"
-           href="{{ url_for('tournament.pick_victor', match_id=match.id, victor_id=match.first_contestant_id) }}">
-          Choose
-        </a>
+          </iframe>
+          <a class="btn btn-outline-secondary"
+             href="{{ url_for('tournament.pick_victor', match_id=match.id, victor_id=match.first_contestant_id) }}">
+            Choose
+          </a>
+        {% else %}
+          <h3>Free win for the other guy</h3>
+        {% endif %}
       </div>
       <div class="col-lg-4" style="position: absolute; left: 52%; width: 45%;">
-        <h3>{{ match.second_contestant.name }}</h3>
-        <iframe id="leftPlayer" style="width: 100%; height: 60vh;"
-                src="https://www.youtube.com/embed/{{ match.second_contestant.video_id }}?playlist={{ match.second_contestant.video_id }}&loop=1">
-        </iframe>
-        <a class="btn btn-outline-secondary"
-           href="{{ url_for('tournament.pick_victor', match_id=match.id, victor_id=match.second_contestant_id) }}">
-          Choose
-        </a>
+        {% if match.second_contestant %}
+          <h3>{{ match.second_contestant.name }}</h3>
+          <iframe id="leftPlayer" style="width: 100%; height: 60vh;"
+                  src="https://www.youtube.com/embed/{{ match.second_contestant.video_id }}?playlist={{ match.second_contestant.video_id }}&loop=1">
+          </iframe>
+          <a class="btn btn-outline-secondary"
+             href="{{ url_for('tournament.pick_victor', match_id=match.id, victor_id=match.second_contestant_id) }}">
+            Choose
+          </a>
+        {% else %}
+          <h3>Free win for the other guy</h3>
+        {% endif %}
       </div>
     </div>
   </div>

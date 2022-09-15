@@ -27,10 +27,12 @@ def create(tid):
     size = 2
     starting_sizes = []
     current_app.logger.info(len(tourney_contestants))
-    while size <= len(tourney_contestants):
+    while size < len(tourney_contestants):
         current_app.logger.info((size, f'Round of {size}'))
         starting_sizes.append((size, f'Round of {size}'))
         size *= 2
+    current_app.logger.info((size, f'Round of {size}'))
+    starting_sizes.append((size, f'Round of {size}'))
     create_form.starting_sizes.choices = starting_sizes
     if create_form.validate_on_submit():
         current_app.logger.debug(f'data - {create_form.starting_sizes.data}')
