@@ -31,7 +31,7 @@ round_contestants = db.Table(
 class Contestant(PkModel):
     __tablename__ = 'contestants'
 
-    name = Column(db.String(80), nullable=False)
+    name = Column(db.String(127), nullable=False)
     video_id = Column(db.String(16), unique=True, nullable=False)
     tournament_id = reference_col('tournaments')
     tournament = relationship('Tournament', backref='contestants')
