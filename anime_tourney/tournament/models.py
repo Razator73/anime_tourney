@@ -60,13 +60,12 @@ class Round(PkModel):
             contestants = list(self.contestants)
             next_round = Round.create(user_tournament_id=self.user_tournament_id, size=self.size // 2)
             matches = []
-            if self.size > len(contestants):
-                while len(contestants) > next_round.size:
-                    if randint(0, 1):
-                        matches.append((contestants.pop(randint(0, len(contestants) - 1)).id, None))
-                    else:
-                        matches.append((None, contestants.pop(randint(0, len(contestants) - 1)).id))
-            while contestants:
+            while len(contestants) + (2 * len(matches)) < self.size:
+                if randint(0, 1):
+                    matches.append((contestants.pop(randint(0, len(contestants) - 1)).id, None))
+                else:
+                    matches.append((None, contestants.pop(randint(0, len(contestants) - 1)).id))
+            while 2 * len(matches) < self.size:
                 matches.append((contestants.pop(randint(0, len(contestants) - 1)).id,
                                 contestants.pop(randint(0, len(contestants) - 1)).id))
             while matches:
