@@ -33,6 +33,7 @@ class Contestant(PkModel):
 
     name = Column(db.String(127), nullable=False)
     video_id = Column(db.String(16), unique=True, nullable=False)
+    bad_video = Column(db.BOOLEAN, nullable=False, default=False)
     tournament_id = reference_col('tournaments')
     tournament = relationship('Tournament', backref='contestants')
 
@@ -47,7 +48,8 @@ class Round(PkModel):
                                backref=db.backref('contestants', lazy='dynamic'))
 
     def set_contestants(self):
-        contestants = list(Contestant.query.filter_by(tournament_id=self.user_tournament.tournament.id).all())
+        contestants = list(Contestant.query.filter_by(tournament_id=self.user_tournament.tournament.id,
+                                                      bad_video=False).all())
         if len(contestants) < self.size:
             self.contestants = sample(contestants, len(contestants))
         else:

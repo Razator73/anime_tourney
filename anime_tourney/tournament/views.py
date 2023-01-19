@@ -22,7 +22,7 @@ def index():
 def create(tid):
     # redirect(url_for('tournament.current_match', tid=tid))
     Tournament.query.filter_by(id=tid).first_or_404()
-    tourney_contestants = Contestant.query.filter_by(tournament_id=tid).all()
+    tourney_contestants = Contestant.query.filter_by(tournament_id=tid, bad_video=False).all()
     create_form = NewUserTournamentForm()
     size = 2
     starting_sizes = []
