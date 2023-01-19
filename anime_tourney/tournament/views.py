@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """User views."""
-from flask import Blueprint, render_template, redirect, url_for, abort, current_app
+from flask import Blueprint, render_template, redirect, url_for, abort, current_app, request
 from flask_login import login_required, current_user
 
 from anime_tourney.extensions import db
-from anime_tourney.tournament.forms import NewUserTournamentForm
+from anime_tourney.tournament.forms import NewUserTournamentForm, VerifyUserTournamentForm
 from anime_tourney.tournament.models import Tournament, UserTournament, Round, Match, Contestant
 
 blueprint = Blueprint("tournament", __name__, url_prefix="/tournaments", static_folder="../static")
@@ -23,6 +23,19 @@ def create(tid):
     # redirect(url_for('tournament.current_match', tid=tid))
     Tournament.query.filter_by(id=tid).first_or_404()
     tourney_contestants = Contestant.query.filter_by(tournament_id=tid, bad_video=False).all()
+    url_args = request.args.to_dict()
+    existing_tourneys = UserTournament.query.filter_by(tournament_id=tid, user_id=current_user.id).all()
+    current_app.logger.debug(f'Existing tourneys - {len(existing_tourneys)}')
+    if len(existing_tourneys) > 0 and url_args.get('new', 'False') == 'False':
+        current_app.logger.debug('Show existing tourney modal')
+        verify_form = VerifyUserTournamentForm()
+        if verify_form.validate_on_submit():
+            if verify_form.existing.data:
+                return redirect(url_for('tournament.user_tournaments'))
+            elif verify_form.new.data:
+                return redirect(url_for('tournament.create', tid=tid, new='True'))
+        return render_template('tournaments/verify_new_tournament.html',
+                               tournaments=Tournament.query.all(), form=verify_form)
     create_form = NewUserTournamentForm()
     size = 2
     starting_sizes = []

@@ -1,0 +1,30 @@
+{% extends 'tournaments/tournaments.html' %}
+
+{% block modal %}
+  <div class="modal" tabindex="-1" role="dialog" id="verifyTournamentModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form action="" method="post">
+          {{ form.hidden_tag() }}
+          <div class="modal-header">
+            <h5 class="modal-title">{{ form.modal_title.label }}</h5>
+          </div>
+          <div class="modal-footer">
+            {{ form.existing() }}
+            {{ form.new() }}
+            <a href="{{ url_for('tournament.index') }}" class="btn btn-secondary">Close</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <script>
+      $(document).ready(function(){
+          console.log("window is loaded")
+          $("#verifyTournamentModal").modal("show")
+      })
+  </script>
+{% endblock %}
